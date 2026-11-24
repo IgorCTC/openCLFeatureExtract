@@ -3,7 +3,7 @@ CC = g++
 DEBUG = -g -DDEBUG
 LLVM_CONFIG=llvm-config
 
-CPPFLAGS = -Wall -c `$(LLVM_CONFIG) --cppflags` -std=c++17 ${DEBUG}
+CPPFLAGS = -Wall -c `$(LLVM_CONFIG) --cppflags` -std=c++17 ${DEBUG} -I/usr/include/ ${DEBUG}
 LDFLAGS = -Wall `$(LLVM_CONFIG) --ldflags`
 LIBS = `$(LLVM_CONFIG) --libs --system-libs`
 
@@ -13,7 +13,7 @@ EXEC = oclFeatureExt.out
 all : $(EXEC)
 
 $(EXEC) : $(OBJS)
-	$(CC) $(OBJS) -o $(EXEC) $(LDFLAGS) $(LIBS) 
+	$(CC) $(OBJS) -o $(EXEC) $(LDFLAGS) $(LIBS)
 
 $(OBJS) : %.o : %.cpp
 	$(CC) $(CPPFLAGS) $< -o $@

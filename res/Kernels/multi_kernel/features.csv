@@ -1,0 +1,2 @@
+functions,bbs,binOps,bitBinOps,vecOps,aggOps,loadOps,storeOps,otherOps,totalOps,gMemAcc,lMemAcc,pMemAcc
+8,26,22,20,0,0,12,6,80,140,0,0,18
