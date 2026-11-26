@@ -29,13 +29,13 @@ for root, dirnames, filenames in os.walk(srcDir):
 print("Kernels found: ")
 print(*kernels, sep="\n")
 
-BITCODE_OUT = "out.bc"
-FEATURE_OUT = "feature_out.csv"
+BITCODE_OUT = "temp/out.bc"
+FEATURE_OUT = "temp/feature_out.csv"
 COMPILE_CMD = ("clang -include %s -include " + args.libclcHome + "/generic/include/clc/clc.h "
 "-I " + args.libclcHome + "/generic/include/ -DBLOCK_SIZE=16 -Dcl_clang_storage_class_specifiers %s "
 "-o %s -emit-llvm -c -O3 -x cl -w")
 
-KERNEL_HEADER_FILE = "kernel.h"
+KERNEL_HEADER_FILE = "temp/kernel.h"
 KERNEL_HEADER = """
 #ifndef ADDRESS_SPACE_H
 #define ADDRESS_SPACE_H
@@ -57,7 +57,7 @@ for kernel in kernels:
     p = subprocess.Popen(cmd, stderr=subprocess.STDOUT, shell=True)
     p.wait()
 
-    cmd = "./oclFeatureExt.out -f ./out.bc -o %s" % (FEATURE_OUT)
+    cmd = "./src/oclFeatureExt.out -f ./temp/out.bc -o %s" % (FEATURE_OUT)
     print("\n\n######################## GETTING FEATURES:\n" + cmd + "\n################################")
     p = subprocess.Popen(cmd, stderr=subprocess.STDOUT, shell=True)
     p.wait()

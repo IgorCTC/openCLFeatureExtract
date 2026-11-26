@@ -1,4 +1,4 @@
-ROOT_DIR="../"
+ROOT_DIR=""
 
 if [ -z "$1" ]; then
     if [ -z "$(find "$ROOT_DIR"res/Kernels -mindepth 1 -maxdepth 1 2>/dev/null)" ];then
@@ -10,4 +10,4 @@ else
     KERNEL_PATH="$1"
 fi
 
-/usr/bin/py "$ROOT_DIR""tools/collectKernelFeatures.py -d "$KERNEL_PATH" -o res/data/full_results.csv -l extern/libclc/
+/usr/bin/py "$ROOT_DIR"tools/collectKernelFeatures.py -d "$KERNEL_PATH" -o res/data/full_results.csv -l extern/libclc/

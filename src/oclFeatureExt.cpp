@@ -36,11 +36,10 @@ int main(int argc, char* argv[]) {
     FeatureStats stats;
 
     ErrorOr<unique_ptr<MemoryBuffer>> fileBuffer = MemoryBuffer::getFile(fileName);
-    if (error_code ec = fileBuffer.getError())
-		errs() << "ERROR loading bitcode file: " << fileName << " -- " << ec.message() << "\n";
-	else
-		outs() << "Bitcode file loaded: " << fileName << "\n";  
-    
+    if (error_code ec = fileBuffer.getError()) 
+        errs() << "ERROR loading bitcode file: " << fileName << " -- " << ec.message() << "\n";
+    else
+	    outs() << "Bitcode file loaded: " << fileName << "\n";  
     
     LLVMContext context;
     MemoryBufferRef memRef = (*fileBuffer)->getMemBufferRef();
