@@ -1,4 +1,4 @@
-OBJS = oclFeatureExt.o
+OBJS = src/oclFeatureExt.o
 CC = g++
 DEBUG = -g -DDEBUG
 LLVM_CONFIG=llvm-config
@@ -8,7 +8,7 @@ LDFLAGS = -Wall `$(LLVM_CONFIG) --ldflags`
 LIBS = `$(LLVM_CONFIG) --libs --system-libs`
 
 
-EXEC = oclFeatureExt.out
+EXEC = src/oclFeatureExt.out
 
 all : $(EXEC)
 

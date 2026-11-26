@@ -1,104 +1,10 @@
-#include <string>
-#include <memory>
-#include <iostream>
-#include <fstream>
-#include <unordered_set>
-
-#include <llvm/IR/LLVMContext.h>
-#include <llvm/IR/Module.h>
-#include <llvm/Bitcode/BitcodeReader.h>
-#include <llvm/Support/MemoryBuffer.h>
-#include <llvm/ADT/Twine.h>
-#include <llvm/IR/Instructions.h>
-#include <llvm/Support/Casting.h>
-#include <llvm/Support/raw_ostream.h>
+#include "../include/FeatureStats.h"
+#include "../include/InputParser.h"
 
 using namespace std;
 using namespace llvm;
 
-const unordered_set<string> BIN_OPS = {"add","fadd", "sub", "fsub", "mul", "fmul", "udiv", "sdif", "fdiv", "urem", "srem", "frem"};
-const unordered_set<string> BITBIN_OPS = {"shl","lshr", "ashr", "and", "or", "xor"};
-const unordered_set<string> VEC_OPS = {"extractelement","insertelement", "shufflevector"};
-const unordered_set<string> AGG_OPS = {"extractvalue","insertvalue"};
-
-const unsigned privateAddressSpace = 0;
-const unsigned localAddressSpace = 1;
-const unsigned globalAddressSpace = 2;
 const string usage = "Usage:\n\t-h help\n\t-f <kernel bitcode file>\n\t-o <output file>\n\t-v verbose\n";
-
-class InputParser{
-    public:
-        InputParser (int &argc, char **argv){
-            for (int i=1; i < argc; ++i)
-                this->tokens.push_back(string(argv[i]));
-        }
-        /// @author iain
-        const string& getCmdOption(const string &option) const{
-            vector<string>::const_iterator itr;
-            itr =  find(this->tokens.begin(), this->tokens.end(), option);
-            if (itr != this->tokens.end() && ++itr != this->tokens.end()){
-                return *itr;
-            }
-            static const string empty = "";
-            return empty;
-        }
-        /// @author iain
-        bool cmdOptionExists(const string &option) const{
-            return find(this->tokens.begin(), this->tokens.end(), option)
-                   != this->tokens.end();
-        }
-    private:
-        vector <string> tokens;
-};
-
-class FeatureStats {
-    
-public:
-    int bbcount = 0;
-    int funcount = 0;
- 
-    int binOpsCount = 0;
-    int bitbinOpsCount = 0;
-    int vecOpsCount = 0;
-    int aggOpsCount = 0;
-    int loadOpsCount = 0;
-    int storeOpsCount = 0;
-    int otherOpsCount = 0;
-    
-    int globalMemAcc = 0;
-    int localMemAcc = 0;
-    int privateMemAcc = 0;
-
-    // Global operator<< overload:
-    friend raw_ostream &operator<<(raw_ostream &os, const FeatureStats &stats)
-    {
-        os << "\n###############################\n";
-        os << "#Functions: " << stats.funcount << "\n";
-        os << "#Basic Blocks: " << stats.bbcount << "\n";
-
-        os << "\n#Bin Ops: " << stats.binOpsCount << "\n";
-        os << "#Bit Bin Ops: " << stats.bitbinOpsCount << "\n";
-        os << "#Vec Ops: " << stats.vecOpsCount << "\n";
-        os << "#Agg Ops: " << stats.aggOpsCount << "\n";
-        os << "#Load Ops: " << stats.loadOpsCount << "\n";
-        os << "#Store Ops: " << stats.storeOpsCount << "\n";
-        os << "#Other Ops: " << stats.otherOpsCount << "\n";
-        
-        os << "\n#Global Mem Access: " << stats.globalMemAcc << "\n";
-        os << "#Local Mem Access: " << stats.localMemAcc << "\n";
-        os << "#Private Mem Access: " << stats.privateMemAcc << "\n";
-        os << "-------------------------------------------\n";
-        os << "#Total Ops: " << stats.getTotalOpsCount();
-        
-        return os;
-    }
-    
-    int getTotalOpsCount() const {
-        return binOpsCount + bitbinOpsCount + 
-                vecOpsCount + aggOpsCount + otherOpsCount +
-                loadOpsCount + storeOpsCount;
-    }
-};
 
 void evalInstruction(const Instruction &inst, FeatureStats &stats);
 bool checkAddrSpace(const unsigned addrSpaceId, FeatureStats &stats);
@@ -191,7 +97,6 @@ void evalInstruction(const Instruction &inst, FeatureStats &stats) {
     } else {
         stats.otherOpsCount++;
     }
-    
 }
 
 bool checkAddrSpace(const unsigned addrSpaceId, FeatureStats &stats) {

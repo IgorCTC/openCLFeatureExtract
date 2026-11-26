@@ -1,9 +1,11 @@
 #!/bin/bash
-set -x # Opcional: mostra cada comando executado para debug
+set -x
 
-if [ -z "$(find extern/libclc -mindepth 1 -maxdepth 1 2>/dev/null)" ]; then
-    mkdir -p extern
-    cd extern
+ROOT_DIR=""
+
+if [ -z "$(find "$ROOT_DIR"extern/libclc -mindepth 1 -maxdepth 1 2>/dev/null)" ]; then
+    mkdir -p "$ROOT_DIR"extern
+    cd "$ROOT_DIR"extern
     git clone https://github.com/llvm-mirror/libclc.git
     cd ../
 fi
@@ -18,17 +20,17 @@ FILE_NAME="$1"
 MACRO_DEP="$2"
 DREAL_TYPE="$3"
 
-OPENCL_INCLUDE="extern/libclc/generic/include/clc/clc.h"
-LIBDIR="extern/libclc/generic/include/"
+OPENCL_INCLUDE=""$ROOT_DIR"extern/libclc/generic/include/clc/clc.h"
+LIBDIR=""$ROOT_DIR"extern/libclc/generic/include/"
 
-mkdir -p "res/extraction"
-FILE_PATH="res/Kernels/$FILE_NAME"
-EXT_PATH="res/extraction/$FILE_NAME"
-OUTPUT_PATH=res/data/"$FILE_NAME"
+mkdir -p ""$ROOT_DIR"res/extraction"
+FILE_PATH=""$ROOT_DIR"res/Kernels/$FILE_NAME"
+EXT_PATH=""$ROOT_DIR"res/extraction/$FILE_NAME"
+OUTPUT_PATH="$ROOT_DIR"res/data/"$FILE_NAME"
 
 mkdir -p "$EXT_PATH/bc" "$EXT_PATH/ll"
 
-INPUT_PATH="res/Kernels/${FILE_NAME}.cl"
+INPUT_PATH=""$ROOT_DIR"res/Kernels/${FILE_NAME}.cl"
 BC_PATH="$EXT_PATH/bc/${FILE_NAME}.bc"
 LL_PATH="$EXT_PATH/ll/${FILE_NAME}.ll"
 
