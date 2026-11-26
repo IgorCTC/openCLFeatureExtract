@@ -13,64 +13,66 @@
 #include <llvm/Support/Casting.h>
 #include <llvm/Support/raw_ostream.h>
 
-const std::unordered_set<std::string> BIN_OPS = {"add","fadd", "sub", "fsub", "mul", "fmul", "udiv", "sdif", "fdiv", "urem", "srem", "frem"};
-const std::unordered_set<std::string> BITBIN_OPS = {"shl","lshr", "ashr", "and", "or", "xor"};
-const std::unordered_set<std::string> VEC_OPS = {"extractelement","insertelement", "shufflevector"};
-const std::unordered_set<std::string> AGG_OPS = {"extractvalue","insertvalue"};
-
-const unsigned privateAddressSpace = 0;
-const unsigned localAddressSpace = 1;
-const unsigned globalAddressSpace = 2;
+#include <cstdint>
+#include <iostream>
 
 #ifndef FEATURE_STATS_H
 #define FEATURE_STATS_H
 
 class FeatureStats {
-    
 public:
-    int bbcount = 0;
-    int funcount = 0;
- 
-    int binOpsCount = 0;
-    int bitbinOpsCount = 0;
-    int vecOpsCount = 0;
-    int aggOpsCount = 0;
-    int loadOpsCount = 0;
-    int storeOpsCount = 0;
-    int otherOpsCount = 0;
-    
-    int globalMemAcc = 0;
-    int localMemAcc = 0;
-    int privateMemAcc = 0;
+    uint64_t problemDataSize = 0;      // 1. Problem Data Size
+    uint64_t numReturnInsts = 0;       // 2. Return instructions
+    uint64_t numBranchInsts = 0;       // 3. Branch Instructions
+    uint64_t numMemAllocations = 0;    // 4. Memory Allocations (alloca)
+    uint64_t numMemLoads = 0;          // 5. Memory Loads
+    uint64_t numMemStores = 0;         // 6. Memory Stores
+    uint64_t numFloatMults = 0;        // 7. Float Multiplications
+    uint64_t numIntMults = 0;          // 8. Integer Multiplications
+    uint64_t numFloatDivs = 0;         // 9. Float Divisions
+    uint64_t numIntDivs = 0;           // 10. Integer Divisions
+    uint64_t numConditionChecks = 0;   // 11. Condition Checks (cmp)
+    uint64_t numFloatAdds = 0;         // 12. Float Additions
+    uint64_t numIntAdds = 0;           // 13. Integer Additions
+    uint64_t numFloatSubs = 0;         // 14. Float Subtractions
+    uint64_t numIntSubs = 0;           // 15. Integer Subtractions
+    uint64_t numFunctionCalls = 0;     // 16. Function Calls
+    uint64_t numFunctions = 0;         // 17. Functions
+    uint64_t numBasicBlocks = 0;       // 18. Blocks of Instructions
+    uint64_t numInstructions = 0;      // 19. Total Instructions
+    uint64_t numFloatOps = 0;          // 20. Total Float Operations
+    uint64_t numIntOps = 0;            // 21. Total Integer Operations
+    uint64_t numLoopOps = 0;           // 22. Loop Operations
+    uint64_t numLoops = 0;             // 23. Loops
 
-    // Global operator<< overload:
-    friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const FeatureStats &stats)
-    {
-        os << "\n###############################\n";
-        os << "#Functions: " << stats.funcount << "\n";
-        os << "#Basic Blocks: " << stats.bbcount << "\n";
-
-        os << "\n#Bin Ops: " << stats.binOpsCount << "\n";
-        os << "#Bit Bin Ops: " << stats.bitbinOpsCount << "\n";
-        os << "#Vec Ops: " << stats.vecOpsCount << "\n";
-        os << "#Agg Ops: " << stats.aggOpsCount << "\n";
-        os << "#Load Ops: " << stats.loadOpsCount << "\n";
-        os << "#Store Ops: " << stats.storeOpsCount << "\n";
-        os << "#Other Ops: " << stats.otherOpsCount << "\n";
-        
-        os << "\n#Global Mem Access: " << stats.globalMemAcc << "\n";
-        os << "#Local Mem Access: " << stats.localMemAcc << "\n";
-        os << "#Private Mem Access: " << stats.privateMemAcc << "\n";
-        os << "-------------------------------------------\n";
-        os << "#Total Ops: " << stats.getTotalOpsCount();
-        
-        return os;
+    void reset() {
+        problemDataSize = 0; numReturnInsts = 0; numBranchInsts = 0;
+        numMemAllocations = 0; numMemLoads = 0; numMemStores = 0;
+        numFloatMults = 0; numIntMults = 0; numFloatDivs = 0; numIntDivs = 0;
+        numConditionChecks = 0; numFloatAdds = 0; numIntAdds = 0;
+        numFloatSubs = 0; numIntSubs = 0; numFunctionCalls = 0;
+        numFunctions = 0; numBasicBlocks = 0; numInstructions = 0;
+        numFloatOps = 0; numIntOps = 0; numLoopOps = 0; numLoops = 0;
     }
-    
-    int getTotalOpsCount() const {
-        return binOpsCount + bitbinOpsCount + 
-                vecOpsCount + aggOpsCount + otherOpsCount +
-                loadOpsCount + storeOpsCount;
+
+    void printHeader(std::ostream &out) const {
+        out << "Problem_Data_Size,Return_Instructions,Branch_Instructions,"
+            << "Memory_Allocations,Memory_Loads,Memory_Stores,"
+            << "Float_Multiplications,Integer_Multiplications,"
+            << "Float_Divisions,Integer_Divisions,Condition_Checks,"
+            << "Float_Additions,Integer_Additions,Float_Subtractions,Integer_Subtractions,"
+            << "Function_Calls,Functions,Blocks_of_Instructions,Instructions,"
+            << "Float_Operations,Integer_Operations,Loop_Operation,Loops\n";
+    }
+
+    void toCSV(std::ostream &out) const {
+        out << problemDataSize << "," << numReturnInsts << "," << numBranchInsts << ","
+            << numMemAllocations << "," << numMemLoads << "," << numMemStores << ","
+            << numFloatMults << "," << numIntMults << "," << numFloatDivs << "," << numIntDivs << ","
+            << numConditionChecks << "," << numFloatAdds << "," << numIntAdds << ","
+            << numFloatSubs << "," << numIntSubs << "," << numFunctionCalls << ","
+            << numFunctions << "," << numBasicBlocks << "," << numInstructions << ","
+            << numFloatOps << "," << numIntOps << "," << numLoopOps << "," << numLoops << "\n";
     }
 };
 

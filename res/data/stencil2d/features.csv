@@ -1,2 +1,2 @@
-functions,bbs,binOps,bitBinOps,vecOps,aggOps,loadOps,storeOps,otherOps,totalOps,gMemAcc,lMemAcc,pMemAcc
-9,60,64,40,0,0,34,6,254,398,0,0,40
+Problem_Data_Size,Return_Instructions,Branch_Instructions,Memory_Allocations,Memory_Loads,Memory_Stores,Float_Multiplications,Integer_Multiplications,Float_Divisions,Integer_Divisions,Condition_Checks,Float_Additions,Integer_Additions,Float_Subtractions,Integer_Subtractions,Function_Calls,Functions,Blocks_of_Instructions,Instructions,Float_Operations,Integer_Operations,Loop_Operation,Loops
+1024,6,54,0,34,6,4,4,0,4,46,20,28,0,4,56,6,60,88,42,70,0,0

@@ -1,12 +1,11 @@
 OBJS = src/oclFeatureExt.o
 CC = g++
 DEBUG = -g -DDEBUG
-LLVM_CONFIG=llvm-config
+LLVM_CONFIG = llvm-config
 
-CPPFLAGS = -Wall -c `$(LLVM_CONFIG) --cppflags` -std=c++17 ${DEBUG} -I/usr/include/ ${DEBUG}
+CPPFLAGS = -Wall -c `$(LLVM_CONFIG) --cxxflags | sed 's/-I/-isystem /g'` -std=c++17 ${DEBUG} -Iinclude -fexceptions
 LDFLAGS = -Wall `$(LLVM_CONFIG) --ldflags`
-LIBS = `$(LLVM_CONFIG) --libs --system-libs`
-
+LIBS = `$(LLVM_CONFIG) --libs core irreader support analysis --system-libs`
 
 EXEC = src/oclFeatureExt.out
 
@@ -19,4 +18,4 @@ $(OBJS) : %.o : %.cpp
 	$(CC) $(CPPFLAGS) $< -o $@
 
 clean:
-	rm -f *.o *~ $(EXEC)
+	rm -f src/*.o *.o *~ $(EXEC)

@@ -20,17 +20,18 @@ FILE_NAME="$1"
 MACRO_DEP="$2"
 DREAL_TYPE="$3"
 
-OPENCL_INCLUDE=""$ROOT_DIR"extern/libclc/generic/include/clc/clc.h"
-LIBDIR=""$ROOT_DIR"extern/libclc/generic/include/"
+PROBLEM_SIZE="${4:-1024}"
+OPENCL_INCLUDE="${ROOT_DIR}extern/libclc/generic/include/clc/clc.h"
+LIBDIR="${ROOT_DIR}extern/libclc/generic/include/"
 
-mkdir -p ""$ROOT_DIR"res/extraction"
-FILE_PATH=""$ROOT_DIR"res/Kernels/$FILE_NAME"
-EXT_PATH=""$ROOT_DIR"res/extraction/$FILE_NAME"
-OUTPUT_PATH="$ROOT_DIR"res/data/"$FILE_NAME"
+mkdir -p "${ROOT_DIR}res/extraction"
+FILE_PATH="${ROOT_DIR}res/Kernels/$FILE_NAME"
+EXT_PATH="${ROOT_DIR}res/extraction/$FILE_NAME"
+OUTPUT_PATH="${ROOT_DIR}res/data/$FILE_NAME"
 
 mkdir -p "$EXT_PATH/bc" "$EXT_PATH/ll"
 
-INPUT_PATH=""$ROOT_DIR"res/Kernels/${FILE_NAME}.cl"
+INPUT_PATH="${ROOT_DIR}res/Kernels/${FILE_NAME}.cl"
 BC_PATH="$EXT_PATH/bc/${FILE_NAME}.bc"
 LL_PATH="$EXT_PATH/ll/${FILE_NAME}.ll"
 
@@ -51,7 +52,7 @@ clang -x cl \
       "${EXTRA_FLAGS[@]}" \
       "$INPUT_PATH" \
       -o "$BC_PATH" \
-      -emit-llvm -c -O3 -x cl
+      -emit-llvm -c -O3
 
 clang -x cl \
       -include "$OPENCL_INCLUDE" \
@@ -63,6 +64,6 @@ clang -x cl \
       -o "$LL_PATH" \
       -emit-llvm -S -O3
 
-make
 mkdir -p "$OUTPUT_PATH"
-./oclFeatureExt.out -f ./"$BC_PATH" -o "$OUTPUT_PATH"/features.csv
+make
+./src/oclFeatureExt.out -f "$BC_PATH" -o "$OUTPUT_PATH/features.csv" -d "$PROBLEM_SIZE"

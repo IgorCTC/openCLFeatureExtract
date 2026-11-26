@@ -1,6 +1,6 @@
-kernel,functions,bbs,binOps,bitBinOps,vecOps,aggOps,loadOps,storeOps,otherOps,totalOps,gMemAcc,lMemAcc,pMemAcc
-res/Kernels/tor_ord.cl,30,67,704,16,102,0,79,89,749,1739,28,0,140
-res/Kernels/stencil2d.cl,9,60,64,40,0,0,34,6,254,398,40,0,0
-res/Kernels/his.cl,10,464,328,16,6,0,384,340,1669,2743,300,0,424
-res/Kernels/stencil1d.cl,3,12,12,10,0,0,8,2,38,70,10,0,0
-res/Kernels/multi_kernel.cl,8,26,22,20,0,0,12,6,80,140,18,0,0
+kernel,Problem_Data_Size,Return_Instructions,Branch_Instructions,Memory_Allocations,Memory_Loads,Memory_Stores,Float_Multiplications,Integer_Multiplications,Float_Divisions,Integer_Divisions,Condition_Checks,Float_Additions,Integer_Additions,Float_Subtractions,Integer_Subtractions,Function_Calls,Functions,Blocks_of_Instructions,Instructions,Float_Operations,Integer_Operations,Loop_Operation,Loops
+res/Kernels/tor_ord.cl,1024,9,58,7,79,89,238,14,202,10,44,193,21,26,4,194,9,67,529,1017,75,0,0
+res/Kernels/stencil2d.cl,1024,6,54,0,34,6,4,4,0,4,46,20,28,0,4,56,6,60,88,42,70,0,0
+res/Kernels/his.cl,1024,5,459,2,384,340,35,40,28,10,32,15,58,17,131,66,5,464,1101,326,280,0,0
+res/Kernels/stencil1d.cl,1024,2,10,0,8,2,0,0,2,0,6,4,6,0,0,2,2,12,18,8,12,0,0
+res/Kernels/multi_kernel.cl,1024,6,20,0,12,6,6,0,0,0,14,0,12,4,0,8,6,26,32,14,22,0,0
