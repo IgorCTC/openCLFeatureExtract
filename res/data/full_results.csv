@@ -1,0 +1,6 @@
+kernel,functions,bbs,binOps,bitBinOps,vecOps,aggOps,loadOps,storeOps,otherOps,totalOps,gMemAcc,lMemAcc,pMemAcc
+res/Kernels/tor_ord.cl,30,67,704,16,102,0,79,89,749,1739,28,0,140
+res/Kernels/stencil2d.cl,9,60,64,40,0,0,34,6,254,398,40,0,0
+res/Kernels/his.cl,10,464,328,16,6,0,384,340,1669,2743,300,0,424
+res/Kernels/stencil1d.cl,3,12,12,10,0,0,8,2,38,70,10,0,0
+res/Kernels/multi_kernel.cl,8,26,22,20,0,0,12,6,80,140,18,0,0

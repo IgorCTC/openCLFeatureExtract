@@ -20,13 +20,17 @@ DREAL_TYPE="$3"
 
 OPENCL_INCLUDE="extern/libclc/generic/include/clc/clc.h"
 LIBDIR="extern/libclc/generic/include/"
-FILE_PATH="res/Kernels/$FILE_NAME"
 
-mkdir -p "$FILE_PATH/bc" "$FILE_PATH/ll"
+mkdir -p "res/extraction"
+FILE_PATH="res/Kernels/$FILE_NAME"
+EXT_PATH="res/extraction/$FILE_NAME"
+OUTPUT_PATH=res/data/"$FILE_NAME"
+
+mkdir -p "$EXT_PATH/bc" "$EXT_PATH/ll"
 
 INPUT_PATH="res/Kernels/${FILE_NAME}.cl"
-BC_PATH="$FILE_PATH/bc/${FILE_NAME}.bc"
-LL_PATH="$FILE_PATH/ll/${FILE_NAME}.ll"
+BC_PATH="$EXT_PATH/bc/${FILE_NAME}.bc"
+LL_PATH="$EXT_PATH/ll/${FILE_NAME}.ll"
 
 EXTRA_FLAGS=()
 if [ -n "$MACRO_DEP" ]; then
@@ -58,4 +62,5 @@ clang -x cl \
       -emit-llvm -S -O3
 
 make
-./oclFeatureExt.out -f ./"$BC_PATH" -o "$FILE_PATH"/features.csv
+mkdir -p "$OUTPUT_PATH"
+./oclFeatureExt.out -f ./"$BC_PATH" -o "$OUTPUT_PATH"/features.csv
