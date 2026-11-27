@@ -1,4 +1,5 @@
 # OpenCL Kernel Static Feature Extractor
+Forked from https://github.com/vsee/openCLFeatureExtract
 
 This program can extract static code features such as *number of basic blocks* or *number of compute operations* from LLVM bitcode. When I originally put this together, my intend was to collect static code features of multiple OpenCL kernels to generate training data for machine learning models.
 
